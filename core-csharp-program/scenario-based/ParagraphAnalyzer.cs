@@ -96,7 +96,7 @@ class ParagraphAnalyzer{
 	static string ReplaceWords(string[] words, string wordToReplace, string wordToReplaceWith){
 		string result = "";
 		for(int i = 0; i < words.Length; i++){
-			if(words[i] == wordToReplace){
+			if(ToLower(words[i]).Equals(ToLower(wordToReplace))){
 				result += wordToReplaceWith;
 			}
 			else{
@@ -132,5 +132,19 @@ class ParagraphAnalyzer{
 			}
 		}
 		return IsAllSpace;
+	}
+
+	// Method to get lowercase of a word
+	static string ToLower(string word){
+		string lowerWord = "";
+		foreach (char c in word){
+			if(c >= 'A' && c <= 'Z'){
+				lowerWord += (char)(c + 32);
+			}
+			else{
+				lowerWord += c;
+			}
+		}
+		return lowerWord;
 	}
 }
