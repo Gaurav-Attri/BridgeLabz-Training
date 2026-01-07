@@ -4,7 +4,7 @@
 
     static EmployeeUtilityImpl()
     {
-        automaticEmployeeId = 0;
+        automaticEmployeeId = 7; // As 7 employees are already present in the employees array
     }
 
     public Employee AddEmployee()

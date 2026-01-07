@@ -13,6 +13,8 @@
         Employees[Index++] = new Employee("Vikas", 3, true, 150, "Full-Time");
         Employees[Index++] = new Employee("Sneha", 4, true, 110, "Full-Time");
         Employees[Index++] = new Employee("Amit", 5, false, 90, "Full-Time");
+        Employees[Index++] = new Employee("Anita", 6, false, 50, "Part-Time");
+        Employees[Index++] = new Employee("Anita", 7, false, 40, "Part-Time");
     }
 
     public static void Main(string[] args)
