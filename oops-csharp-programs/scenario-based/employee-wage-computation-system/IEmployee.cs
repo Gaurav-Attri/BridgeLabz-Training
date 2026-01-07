@@ -2,4 +2,5 @@
 {
     Employee AddEmployee();
     bool CheckEmployeeAttendance();
+    double CalculateDailyEmployeeWage();
 }

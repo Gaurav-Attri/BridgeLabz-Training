@@ -11,7 +11,8 @@
         {
             Console.WriteLine("1. Add an employee");
             Console.WriteLine("2. Check employee Attendance");
-            Console.WriteLine("3. Exit");
+            Console.WriteLine("3. Calculate Daily Employee Wage");
+            Console.WriteLine("4. Exit");
             Console.Write("Enter your choice: ");
             int choice = int.Parse(Console.ReadLine());
 
@@ -36,6 +37,12 @@
                     break;
 
                 case 3:
+                    Console.WriteLine("Daily Wage: " +
+                       EmployeeUtility.CalculateDailyEmployeeWage() + "\n");
+                    break;
+
+
+                case 4:
                     return;
             }
         }

@@ -49,4 +49,24 @@
         Console.WriteLine("Employee Doesn't exist\n");
         return false;
     }
+
+    public double CalculateDailyEmployeeWage()
+    {
+        Console.Write("\nEnter Employee Id: ");
+        int employeeId = int.Parse(Console.ReadLine());
+
+        foreach (Employee employee in EmployeeMain.Employees)
+        {
+            if (employee != null && employee.GetEmployeeId() == employeeId)
+            {
+                if (employee.GetIsPresent())
+                {
+                    return employee.GetWagePerHour() * 8;
+                }
+                return 0;
+            }
+        }
+
+        return 0;
+    }
 }
