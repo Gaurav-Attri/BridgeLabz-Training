@@ -4,4 +4,5 @@
     bool CheckEmployeeAttendance();
     double CalculateDailyEmployeeWage();
     double CalculateMonthlyEmployeeWage();
+    double CalculateWageTillCondition();
 }

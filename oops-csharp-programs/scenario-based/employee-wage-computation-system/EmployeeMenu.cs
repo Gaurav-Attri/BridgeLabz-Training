@@ -13,7 +13,8 @@
             Console.WriteLine("2. Check employee Attendance");
             Console.WriteLine("3. Calculate Daily Employee Wage");
             Console.WriteLine("4. Calculate Monthly Employee Wage");
-            Console.WriteLine("5. Exit");
+            Console.WriteLine("5. Calculate Wage Till Condition (100 hrs / 20 days)");
+            Console.WriteLine("6. Exit");
             Console.Write("Enter your choice: ");
             int choice = int.Parse(Console.ReadLine());
 
@@ -48,6 +49,11 @@
                     break;
 
                 case 5:
+                    Console.WriteLine("Wage Till Condition: " +
+                        EmployeeUtility.CalculateWageTillCondition());
+                    break;
+
+                case 6:
                     return;
             }
         }

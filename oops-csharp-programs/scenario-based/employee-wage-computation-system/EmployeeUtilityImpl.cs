@@ -75,4 +75,28 @@
         double dailyWage = CalculateDailyEmployeeWage();
         return dailyWage * 20;
     }
+
+    public double CalculateWageTillCondition()
+    {
+        Console.Write("Enter Employee Id: ");
+        int employeeId = int.Parse(Console.ReadLine());
+
+        foreach (Employee employee in EmployeeMain.Employees)
+        {
+            if (employee != null && employee.GetEmployeeId() == employeeId)
+            {
+                if (!employee.GetIsPresent())
+                {
+                    return 0;
+                }
+
+                int maxHours = 100;
+                int hoursPerDay = 8;
+
+                return employee.GetWagePerHour() * maxHours;
+            }
+        }
+        return 0;
+    }
+
 }
