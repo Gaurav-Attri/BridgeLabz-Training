@@ -69,4 +69,10 @@
 
         return 0;
     }
+
+    public double CalculateMonthlyEmployeeWage()
+    {
+        double dailyWage = CalculateDailyEmployeeWage();
+        return dailyWage * 20;
+    }
 }
