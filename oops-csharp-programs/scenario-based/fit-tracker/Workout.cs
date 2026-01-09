@@ -1,28 +1,11 @@
-﻿internal class Workout
+﻿internal abstract class Workout : ITrackable
 {
-    private string workoutName;
-    private int duration;
+    protected int Duration;
 
-    public string WorkoutName
+    public Workout(int duration)
     {
-        get { return workoutName; }
-        set { workoutName = value; }
+        Duration = duration;
     }
 
-    public int Duration
-    {
-        get { return duration; }
-        set { duration = value; }
-    }
-
-    public Workout(string workoutName, int duration)
-    {
-        this.workoutName = workoutName;
-        this.duration = duration;
-    }
-
-    public override string ToString()
-    {
-        return "Workout: " + workoutName + ", Duration: " + duration + " mins";
-    }
+    public abstract void ShowWorkoutDetails();
 }

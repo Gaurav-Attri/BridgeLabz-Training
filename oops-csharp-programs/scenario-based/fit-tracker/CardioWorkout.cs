@@ -1,21 +1,16 @@
 ﻿internal class CardioWorkout : Workout
 {
-    private int caloriesBurned;
+    private string CardioType;
 
-    public int CaloriesBurned
+    public CardioWorkout(int duration, string cardioType) : base(duration)
     {
-        get { return caloriesBurned; }
-        set { caloriesBurned = value; }
+        CardioType = cardioType;
     }
 
-    public CardioWorkout(string name, int duration, int calories)
-        : base(name, duration)
+    public override void ShowWorkoutDetails()
     {
-        caloriesBurned = calories;
-    }
-
-    public override string ToString()
-    {
-        return base.ToString() + ", Calories Burned: " + caloriesBurned;
+        Console.WriteLine("Workout Type: Cardio");
+        Console.WriteLine("Cardio Type: " + CardioType);
+        Console.WriteLine("Duration: " + Duration + " minutes");
     }
 }
