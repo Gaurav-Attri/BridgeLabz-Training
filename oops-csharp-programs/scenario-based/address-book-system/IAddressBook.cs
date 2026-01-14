@@ -2,4 +2,5 @@
 {
     void AddContact();
     void DisplayAllContacts();
+    void EditExistingContact();
 }
