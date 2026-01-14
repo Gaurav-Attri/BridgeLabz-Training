@@ -1,4 +1,6 @@
-﻿internal class AddressBookUtility: IAddressBook
+﻿using System.Resources;
+
+internal class AddressBookUtility: IAddressBook
 {
     private AddressBook FirstAddressBook;
     private Contact[] Contacts;
@@ -196,5 +198,22 @@
         }
 
         return -1;
+    }
+    
+    public void AddMultipleContacts()
+    {
+        int remainingSpace = AddressBookMaxSize - AddressBookIndex;
+        Console.WriteLine($"\nYou can add at most {remainingSpace}\n");
+        Console.Write("Please enter the number of contacts to you want to add: ");
+        int numberOfContacts = int.Parse(Console.ReadLine());
+        if(numberOfContacts > (remainingSpace))
+        {
+            Console.WriteLine($"Please enter a number <= {remainingSpace}. Try again");
+            return;
+        }
+        for(int i = 0; i < numberOfContacts; i++)
+        {
+            AddContact();
+        }
     }
 }

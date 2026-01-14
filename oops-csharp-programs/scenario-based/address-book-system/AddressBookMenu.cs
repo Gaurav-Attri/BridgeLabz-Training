@@ -17,6 +17,7 @@
             Console.WriteLine("2. Display all Contacts");
             Console.WriteLine("3. Edit existing Contact");
             Console.WriteLine("4. Delete a Contact");
+            Console.WriteLine("5. Add Multiple Contacts");
             Console.WriteLine("0. Exit");
             Console.Write("Please enter your choice: ");
             choice = int.Parse(Console.ReadLine());
@@ -34,6 +35,9 @@
                     break;
                 case 4:
                     addressBookUtility.DeleteContact();
+                    break;
+                case 5:
+                    addressBookUtility.AddMultipleContacts();
                     break;
             }
 

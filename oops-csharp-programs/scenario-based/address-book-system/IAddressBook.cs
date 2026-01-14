@@ -4,4 +4,5 @@
     void DisplayAllContacts();
     void EditExistingContact();
     void DeleteContact();
+    void AddMultipleContacts();
 }
