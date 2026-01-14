@@ -1,0 +1,5 @@
+﻿internal interface IAddressBook
+{
+    void AddContact();
+    void DisplayAllContacts();
+}
