@@ -1,22 +1,36 @@
 ﻿using System.Resources;
+using System.Runtime.Loader;
 
 internal class AddressBookUtility: IAddressBook
 {
-    private AddressBook FirstAddressBook;
-    private Contact[] Contacts;
-    private int AddressBookMaxSize;
-    private int AddressBookIndex;
+    private AddressBook[] AddressBooks;
+    private int AddressBookArrayIndex;
 
     public AddressBookUtility()
     {
-        FirstAddressBook = AddressBookMain.FirstAddressBook;
-        AddressBookMaxSize = AddressBookMain.FirstAddressBook.GetMaxSize();
-        AddressBookIndex = AddressBookMain.FirstAddressBook.GetCurrentIndex();
-        Contacts = AddressBookMain.FirstAddressBook.GetContacts();
+        AddressBooks = AddressBookMain.AddressBooks;
+        AddressBookArrayIndex = AddressBookMain.AddressBookArrayIndex;
     }
     public void AddContact()
     {
         Console.WriteLine("\n==== Contact Adding Window ====\n");
+        Console.Write("Enter address book name (press enter for default): ");
+        string addressBookName = Console.ReadLine();
+
+        if (addressBookName == "") addressBookName = "default";
+
+        AddressBook addressBook = FindAddressBookByName(addressBookName);
+
+        if(addressBook == null)
+        {
+            Console.WriteLine("\nAddress book with this name doesn't exist.\n");
+            return;
+        }
+
+        int addressBookIndex = addressBook.GetCurrentIndex();
+        int addressBookMaxSize = addressBook.GetMaxSize();
+        Contact[] contacts = addressBook.GetContacts();
+
         Console.Write("Enter first name: ");
         string firstName = Console.ReadLine();
         Console.Write("Enter last name: ");
@@ -34,12 +48,12 @@ internal class AddressBookUtility: IAddressBook
 
         Contact newContact = new Contact(firstName, lastName, city, state, zipCode, phoneNumber, email);
 
-        if(AddressBookIndex < AddressBookMaxSize)
+        if (addressBookIndex < addressBookMaxSize)
         {
             // Updating Contacts array here also updates the Contacts array in the state as this is reference type
-            Contacts[AddressBookIndex++] = newContact;
+            contacts[addressBookIndex++] = newContact;
             // Since AddressBookIndex is int, to update the state, we'll have to call the setter method
-            FirstAddressBook.SetCurrentIndex(AddressBookIndex);
+            addressBook.SetCurrentIndex(addressBookIndex);
             Console.WriteLine("\nContact added successfully.\n");
         }
         else
@@ -47,33 +61,44 @@ internal class AddressBookUtility: IAddressBook
             Console.WriteLine("\nContact array is full.\n");
         }
     }
-    
+
+    // Helper method for AddContact
+    // Returns Address book if found
+    // Returns null otherwise
+    private AddressBook FindAddressBookByName(string addressBookName)
+    {
+        for(int i = 0; i < AddressBookArrayIndex; i++)
+        {
+            if (AddressBooks[i].GetAddressBookName().Equals(addressBookName))
+            {
+                return AddressBooks[i];
+            }
+        }
+
+        return null;
+    }
+
     public void DisplayAllContacts()
     {
-        if(AddressBookIndex == 0)
+        Console.WriteLine("\nHere are all the contacts across all the address books\n");
+        for(int i = 0; i < AddressBookArrayIndex; i++)
         {
-            Console.WriteLine("\nThere are NO contacts in the address book...\n");
-            return;
-        }
-        Console.WriteLine("\nHere are all the contacts:\n");
-        for(int i = 0; i < AddressBookIndex; i++)
-        {
-            Console.WriteLine(Contacts[i]);
+            AddressBook addressBook = AddressBooks[i];
+            Console.WriteLine($"\nBook Name: {addressBook.GetAddressBookName()}");
+            for (int j = 0; j < addressBook.GetCurrentIndex(); j++)
+            {
+                Console.WriteLine(addressBook.GetContacts()[j]);
+            }
         }
         Console.WriteLine("\n");
     }
 
     public void EditExistingContact()
     {
-        if(AddressBookIndex == 0)
-        {
-            Console.WriteLine("\nThere are NO contacts in the address book...\n");
-            return;
-        }
         Console.WriteLine("\n==== Editing Existing Contact Window ====\n");
         Console.Write("Enter contact first name: ");
-        string name = Console.ReadLine();
-        Contact contact = FindContactByName(name);
+        string firstName = Console.ReadLine();
+        Contact contact = FindContactByName(firstName);
 
         if(contact == null)
         {
@@ -97,8 +122,8 @@ internal class AddressBookUtility: IAddressBook
         {
             case 1:
                 Console.Write("Please enter updated first name: ");
-                string firstName = Console.ReadLine();
-                contact.SetFirstName(firstName);
+                string updatedFirstName = Console.ReadLine();
+                contact.SetFirstName(updatedFirstName);
                 break;
             case 2:
                 Console.Write("Please enter updated last name: ");
@@ -137,14 +162,21 @@ internal class AddressBookUtility: IAddressBook
         Console.WriteLine("\nContact Updated Successfully...\n");
     }
 
-    // Helper method for EditExistingContact method to find a contact given its name
+    // Helper method for EditExistingContact method to find a contact across all the books given its firstName
     // Returns the contact if the contact is found in the array
     // Returns null otherwise
-    private Contact FindContactByName(string name)
+    private Contact FindContactByName(string firstName)
     {
-        for(int i = 0; i < AddressBookIndex; i++)
+        for(int i = 0; i < AddressBookArrayIndex; i++)
         {
-            if (Contacts[i].GetFirstName().Equals(name)) return Contacts[i];
+            for(int j = 0; j < AddressBooks[i].GetCurrentIndex(); j++)
+            {
+                Console.WriteLine();
+                if (AddressBooks[i].GetContacts()[j].GetFirstName().Equals(firstName))
+                {
+                    return AddressBooks[i].GetContacts()[j];
+                }
+            }
         }
 
         return null;
@@ -152,18 +184,12 @@ internal class AddressBookUtility: IAddressBook
 
     public void DeleteContact()
     {
-        if (AddressBookIndex == 0)
-        {
-            Console.WriteLine("\nThere are NO contacts in the address book...\n");
-            return;
-        }
-
         Console.WriteLine("\n==== Contact Deletion Windows ====\n");
         Console.Write("Please enter the first name of the contact to delete: ");
         string firstName = Console.ReadLine();
         int contactIndex = FindContactIndex(firstName);
 
-        if(contactIndex == -1)
+        if (contactIndex == -1)
         {
             Console.WriteLine("\nContact with this first name doesn't exist\n");
             return;
@@ -176,13 +202,14 @@ internal class AddressBookUtility: IAddressBook
             This way we'll preserve all the contacts and delete the given one
          */
 
-        for(int i = contactIndex; i < AddressBookIndex && i < AddressBookMaxSize-1; i++)
+        AddressBook addressBook = FindAddressBookByContactName(firstName);
+
+        for (int i = contactIndex; i < addressBook.GetCurrentIndex() && i < addressBook.GetMaxSize() - 1; i++)
         {
-            Contacts[i] = Contacts[i + 1];
+            addressBook.GetContacts()[i] = addressBook.GetContacts()[i + 1];
         }
 
-        AddressBookIndex--;
-        FirstAddressBook.SetCurrentIndex(AddressBookIndex);
+        addressBook.SetCurrentIndex(addressBook.GetCurrentIndex() - 1);
 
         Console.WriteLine("\nContact Deleted Successfully...\n");
     }
@@ -192,28 +219,91 @@ internal class AddressBookUtility: IAddressBook
     // Return -1 otherwise
     private int FindContactIndex(string firstName)
     {
-        for(int i = 0; i < AddressBookIndex; i++)
+        for (int i = 0; i < AddressBookArrayIndex; i++)
         {
-            if (Contacts[i].GetFirstName().Equals(firstName)) return i;
+            for (int j = 0; j < AddressBooks[i].GetCurrentIndex(); j++)
+            {
+                Console.WriteLine();
+                if (AddressBooks[i].GetContacts()[j].GetFirstName().Equals(firstName))
+                {
+                    return j;
+                }
+            }
         }
 
         return -1;
     }
-    
+
+    private AddressBook FindAddressBookByContactName(string firstName)
+    {
+        for (int i = 0; i < AddressBookArrayIndex; i++)
+        {
+            for (int j = 0; j < AddressBooks[i].GetCurrentIndex(); j++)
+            {
+                Console.WriteLine();
+                if (AddressBooks[i].GetContacts()[j].GetFirstName().Equals(firstName))
+                {
+                    return AddressBooks[i];
+                }
+            }
+        }
+
+        return null;
+    }
+
     public void AddMultipleContacts()
     {
-        int remainingSpace = AddressBookMaxSize - AddressBookIndex;
+        Console.Write("\nPlease enter address book name: ");
+        string bookName = Console.ReadLine();
+
+        AddressBook addressBook = FindAddressBookByName(bookName);
+
+        if(addressBook == null)
+        {
+            Console.WriteLine("\nAddress book with given name doesn't exist.\n");
+            return;
+        }
+
+        int remainingSpace = addressBook.GetMaxSize() - addressBook.GetCurrentIndex();
         Console.WriteLine($"\nYou can add at most {remainingSpace}\n");
         Console.Write("Please enter the number of contacts to you want to add: ");
         int numberOfContacts = int.Parse(Console.ReadLine());
-        if(numberOfContacts > (remainingSpace))
+        if (numberOfContacts > (remainingSpace))
         {
             Console.WriteLine($"Please enter a number <= {remainingSpace}. Try again");
             return;
         }
-        for(int i = 0; i < numberOfContacts; i++)
+        for (int i = 0; i < numberOfContacts; i++)
         {
             AddContact();
         }
+    }
+
+    public void ListAllAddressBooks()
+    {
+        Console.WriteLine("\nHere is a list of all the address books: \n");
+        for(int i = 0; i < AddressBookArrayIndex; i++)
+        {
+            Console.WriteLine($"Address Book Name: {AddressBooks[i].GetAddressBookName()}");
+        }
+    }
+    
+    public void CreateAddressBook()
+    {
+        if(AddressBookArrayIndex >= AddressBooks.Length)
+        {
+            Console.WriteLine("\nAddress book array is already full. You cannot create any more address books.\n");
+            return;
+        }
+
+        Console.WriteLine("\n==== Address Book Creation Window ====\n");
+        Console.Write("Please enter address book max capacity: ");
+        int addressBookMaxCapacity = int.Parse(Console.ReadLine());
+        Console.Write("Please enter address book name: ");
+        string addressBookName = Console.ReadLine();
+
+        AddressBook NewAddressBook = new AddressBook(addressBookMaxCapacity, addressBookName);
+
+        AddressBooks[AddressBookArrayIndex++] = NewAddressBook;
     }
 }

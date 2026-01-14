@@ -1,6 +1,6 @@
 ﻿internal class AddressBookMenu
 {
-    private AddressBookUtility addressBookUtility;
+    private IAddressBook addressBookUtility;
 
     public AddressBookMenu()
     {
@@ -18,6 +18,8 @@
             Console.WriteLine("3. Edit existing Contact");
             Console.WriteLine("4. Delete a Contact");
             Console.WriteLine("5. Add Multiple Contacts");
+            Console.WriteLine("6. List all Address Books");
+            Console.WriteLine("7. Create an Address Book.");
             Console.WriteLine("0. Exit");
             Console.Write("Please enter your choice: ");
             choice = int.Parse(Console.ReadLine());
@@ -38,6 +40,12 @@
                     break;
                 case 5:
                     addressBookUtility.AddMultipleContacts();
+                    break;
+                case 6:
+                    addressBookUtility.ListAllAddressBooks();
+                    break;
+                case 7:
+                    addressBookUtility.CreateAddressBook();
                     break;
             }
 

@@ -5,4 +5,6 @@
     void EditExistingContact();
     void DeleteContact();
     void AddMultipleContacts();
+    void ListAllAddressBooks();
+    void CreateAddressBook();
 }
