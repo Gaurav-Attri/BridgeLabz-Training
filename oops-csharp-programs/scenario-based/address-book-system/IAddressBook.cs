@@ -7,4 +7,5 @@
     void AddMultipleContacts();
     void ListAllAddressBooks();
     void CreateAddressBook();
+    void ListAllContactsInCityOrState();
 }
