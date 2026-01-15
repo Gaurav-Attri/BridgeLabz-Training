@@ -23,6 +23,7 @@
             Console.WriteLine("8. List all contacts in a city or state.");
             Console.WriteLine("9. Search a contact by first name and city or state.");
             Console.WriteLine("10. Count contacts in a city or state.");
+            Console.WriteLine("11. Display all contacts in lexographically sorted order.");
             Console.WriteLine("0. Exit");
             Console.Write("Please enter your choice: ");
             choice = int.Parse(Console.ReadLine());
@@ -58,6 +59,9 @@
                     break;
                 case 10:
                     addressBookUtility.CountContactsByCityOrState();
+                    break;
+                case 11:
+                    addressBookUtility.SortContactsAlphabeticallyByFirstName();
                     break;
             }
 

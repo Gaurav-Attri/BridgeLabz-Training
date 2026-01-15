@@ -395,4 +395,49 @@ internal class AddressBookUtility : IAddressBook
 
         Console.WriteLine($"\nThe number of contacts residing in {searchQuery} is: {contactsCount}\n");
     }
+
+    public void SortContactsAlphabeticallyByFirstName()
+    {
+        Console.WriteLine("\n==== Result of sorting contacts.");
+        for(int i = 0; i < AddressBookArrayIndex; i++)
+        {
+            QuickSort(AddressBooks[i].GetContacts(), 0, AddressBooks[i].GetCurrentIndex() - 1);
+        }
+        DisplayAllContacts();
+    }
+
+    private void QuickSort(Contact[] contacts, int left, int right)
+    {
+        if(left >= right)
+        {
+            return;
+        }
+
+        int pivotIndex = Partition(contacts, left, right);
+
+        QuickSort(contacts, left, pivotIndex - 1);
+        QuickSort(contacts, pivotIndex + 1, right);
+    }
+
+    private int Partition(Contact[] contacts, int left, int right)
+    {
+        Contact pivot = contacts[right];
+        int boundary = left - 1;
+
+        for(int i = left; i <= right-1; i++)
+        {
+            if (String.Compare(contacts[i].GetFirstName(), pivot.GetFirstName()) < 0)
+            {
+                boundary++;
+                // Swapping
+                Contact temp = contacts[i];
+                contacts[i] = contacts[boundary];
+                contacts[boundary] = temp;
+            }
+        }
+        contacts[right] = contacts[boundary + 1];
+        contacts[boundary + 1] = pivot;
+
+        return boundary + 1;
+    }
 }

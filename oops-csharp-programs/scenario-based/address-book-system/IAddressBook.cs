@@ -10,4 +10,5 @@
     void ListAllContactsInCityOrState();
     void SearchContactInCityOrState();
     void CountContactsByCityOrState();
+    void SortContactsAlphabeticallyByFirstName();
 }
