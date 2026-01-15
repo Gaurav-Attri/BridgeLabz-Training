@@ -333,7 +333,7 @@ internal class AddressBookUtility : IAddressBook
     
     public void ListAllContactsInCityOrState()
     {
-        Console.WriteLine("\n==== Search by city or state ====\n");
+        Console.WriteLine("\n==== List all contacts in a city or state ====\n");
         Console.Write("Please enter city or state: ");
         string searchQuery = Console.ReadLine();
         Console.WriteLine($"\nHere are all the contacts that reside in {searchQuery}:\n");
@@ -351,5 +351,27 @@ internal class AddressBookUtility : IAddressBook
         }
 
         Console.WriteLine("\n");
+    }
+
+    public void SearchContactInCityOrState()
+    {
+        Console.WriteLine("\n==== Search a contact in a city or state ====\n");
+        Console.Write("Enter Contact's first name: ");
+        string firstName = Console.ReadLine();
+        Console.Write("Enter Contact's city or state name: ");
+        string cityOrStateName = Console.ReadLine();
+        Console.WriteLine("\nHere is the result: \n");
+
+        // Looking for the given contact in the given city or state
+        for (int i = 0; i < AddressBookArrayIndex; i++)
+        {
+            for (int j = 0; j < AddressBooks[i].GetCurrentIndex(); j++)
+            {
+                if (AddressBooks[i].GetContacts()[j].GetFirstName().Equals(firstName) && (AddressBooks[i].GetContacts()[j].GetCity().Equals(cityOrStateName) || AddressBooks[i].GetContacts()[j].GetState().Equals(cityOrStateName)))
+                {
+                    Console.WriteLine(AddressBooks[i].GetContacts()[j]);
+                }
+            }
+        }
     }
 }

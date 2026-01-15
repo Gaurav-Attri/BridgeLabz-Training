@@ -21,6 +21,7 @@
             Console.WriteLine("6. List all Address Books");
             Console.WriteLine("7. Create an Address Book.");
             Console.WriteLine("8. List all contacts in a city or state.");
+            Console.WriteLine("9. Search a contact by first name and city or state.");
             Console.WriteLine("0. Exit");
             Console.Write("Please enter your choice: ");
             choice = int.Parse(Console.ReadLine());
@@ -50,6 +51,9 @@
                     break;
                 case 8:
                     addressBookUtility.ListAllContactsInCityOrState();
+                    break;
+                case 9:
+                    addressBookUtility.SearchContactInCityOrState();
                     break;
             }
 
