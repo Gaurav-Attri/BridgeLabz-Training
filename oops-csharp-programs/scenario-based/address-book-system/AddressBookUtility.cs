@@ -374,4 +374,25 @@ internal class AddressBookUtility : IAddressBook
             }
         }
     }
+
+    public void CountContactsByCityOrState()
+    {
+        Console.WriteLine("\n==== Count Contacts By City or State name ====\n");
+        Console.Write("Please enter the city or state name: ");
+        string searchQuery = Console.ReadLine();
+        int contactsCount = 0;
+
+        for (int i = 0; i < AddressBookArrayIndex; i++)
+        {
+            for (int j = 0; j < AddressBooks[i].GetCurrentIndex(); j++)
+            {
+                if (AddressBooks[i].GetContacts()[j].GetCity().Equals(searchQuery) || AddressBooks[i].GetContacts()[j].GetState().Equals(searchQuery))
+                {
+                    contactsCount++;
+                }
+            }
+        }
+
+        Console.WriteLine($"\nThe number of contacts residing in {searchQuery} is: {contactsCount}\n");
+    }
 }

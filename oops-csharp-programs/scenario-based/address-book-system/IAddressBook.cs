@@ -9,4 +9,5 @@
     void CreateAddressBook();
     void ListAllContactsInCityOrState();
     void SearchContactInCityOrState();
+    void CountContactsByCityOrState();
 }
